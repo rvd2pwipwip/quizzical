@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import he from "he";
 
 function App() {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -14,6 +16,7 @@ function App() {
         }
         const data = await response.json();
         setQuestions(data.results);
+        setSelectedAnswers(data.results.map(() => null));
       } catch (e) {
         setError(e.message);
       } finally {
@@ -48,16 +51,31 @@ function App() {
           return answerChoices;
         };
 
+        const handleAnswerClick = (answer, index) => {
+          setSelectedAnswers((prevSelected) => {
+            const newAnswers = [...prevSelected];
+            newAnswers[index] = answer;
+            console.log(newAnswers);
+            return newAnswers;
+          });
+        };
+
         return (
           <section key={index}>
-            <h3 className="question">{item.question}</h3>
-            <section className="answerChoices">
-              {combineAndRandomizeAnswers(correctAnswer, incorrectAnswers).map(
-                (answer) => (
-                  <button key={answer}>{answer}</button>
-                )
-              )}
-            </section>
+            <h3 className="question">{he.decode(item.question)}</h3>
+            {combineAndRandomizeAnswers(correctAnswer, incorrectAnswers).map(
+              (answer) => (
+                <label key={answer}>
+                  {he.decode(answer)}
+                  <input
+                    type="radio"
+                    name={index}
+                    value={answer}
+                    onChange={() => handleAnswerClick(answer, index)}
+                  />
+                </label>
+              )
+            )}
           </section>
         );
       })
