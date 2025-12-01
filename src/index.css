@@ -108,6 +108,7 @@ section {
 body {
   line-height: 1;
   background-color: #f5f7fb;
+  color: #293264;
   font-family: "Karla", Arial, sans-serif;
 }
 ol,
@@ -128,4 +129,12 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+.question {
+  font-family: Karla;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }

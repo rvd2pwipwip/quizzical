@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./App.css";
 
 function App() {
   const [questions, setQuestions] = useState([]);
@@ -32,14 +31,37 @@ function App() {
     return <div>Error: {error}</div>;
   }
 
-  console.log(questions);
-
   const questionElements = questions
     ? questions.map((item, index) => {
-        return <h3 key={index}>{item.question}</h3>;
+        const correctAnswer = item.correct_answer;
+        const incorrectAnswers = item.incorrect_answers;
+
+        const combineAndRandomizeAnswers = (
+          correctAnswer,
+          incorrectAnswers
+        ) => {
+          const answerChoices = [...incorrectAnswers];
+          const randomIndex = Math.floor(
+            Math.random() * (answerChoices.length + 1)
+          );
+          answerChoices.splice(randomIndex, 0, correctAnswer);
+          return answerChoices;
+        };
+
+        return (
+          <section key={index}>
+            <h3 className="question">{item.question}</h3>
+            <section className="answerChoices">
+              {combineAndRandomizeAnswers(correctAnswer, incorrectAnswers).map(
+                (answer) => (
+                  <button key={answer}>{answer}</button>
+                )
+              )}
+            </section>
+          </section>
+        );
       })
     : null;
-  console.log(questionElements);
 
   return (
     <>
