@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import he from "he";
 
 function App() {
@@ -26,6 +26,20 @@ function App() {
     fetchQuestions();
   }, []);
 
+  const randomizedAnswers = useMemo(() => {
+    if (!questions || questions.length === 0) return [];
+    return questions.map((item) => {
+      const correctAnswer = item.correct_answer;
+      const incorrectAnswers = item.incorrect_answers;
+      const answerChoices = [...incorrectAnswers];
+      const randomIndex = Math.floor(
+        Math.random() * (answerChoices.length + 1)
+      );
+      answerChoices.splice(randomIndex, 0, correctAnswer);
+      return answerChoices;
+    });
+  }, [questions]);
+
   if (loading) {
     return <div>Loading questions...</div>;
   }
@@ -36,21 +50,6 @@ function App() {
 
   const questionElements = questions
     ? questions.map((item, index) => {
-        const correctAnswer = item.correct_answer;
-        const incorrectAnswers = item.incorrect_answers;
-
-        const combineAndRandomizeAnswers = (
-          correctAnswer,
-          incorrectAnswers
-        ) => {
-          const answerChoices = [...incorrectAnswers];
-          const randomIndex = Math.floor(
-            Math.random() * (answerChoices.length + 1)
-          );
-          answerChoices.splice(randomIndex, 0, correctAnswer);
-          return answerChoices;
-        };
-
         const handleAnswerClick = (answer, index) => {
           setSelectedAnswers((prevSelected) => {
             const newAnswers = [...prevSelected];
@@ -63,19 +62,17 @@ function App() {
         return (
           <section key={index}>
             <h3 className="question">{he.decode(item.question)}</h3>
-            {combineAndRandomizeAnswers(correctAnswer, incorrectAnswers).map(
-              (answer) => (
-                <label key={answer}>
-                  {he.decode(answer)}
-                  <input
-                    type="radio"
-                    name={index}
-                    value={answer}
-                    onChange={() => handleAnswerClick(answer, index)}
-                  />
-                </label>
-              )
-            )}
+            {randomizedAnswers[index]?.map((answer) => (
+              <label key={answer}>
+                {he.decode(answer)}
+                <input
+                  type="radio"
+                  name={index}
+                  value={answer}
+                  onChange={() => handleAnswerClick(answer, index)}
+                />
+              </label>
+            ))}
           </section>
         );
       })
