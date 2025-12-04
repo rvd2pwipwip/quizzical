@@ -131,10 +131,129 @@ table {
   border-spacing: 0;
 }
 
-.question {
-  font-family: Karla;
-  font-size: 1rem;
-  font-style: normal;
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url("./assets/blobBottom.svg"), url("./assets/blobTop.svg");
+  background-position: left bottom, right top;
+  background-repeat: no-repeat;
+  background-size: 20rem 20rem, 20rem 20rem;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 40rem;
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
   font-weight: 700;
-  line-height: normal;
+  line-height: 1.2;
+  padding: 0.5rem 0;
+}
+
+#start-game-btn {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  padding: 1rem 3rem;
+}
+
+#questions {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+.question-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #dbdef0;
+  margin-bottom: 1rem;
+}
+
+.answers {
+  display: flex;
+  gap: 0.75rem 1rem;
+  flex-wrap: wrap;
+}
+
+.base-label {
+  font-family: Inter;
+  font-size: 0.64rem;
+  display: inline-block;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #4d5b9e;
+  border-radius: 8px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.base-label:has(input[type="radio"]:checked) {
+  background-color: #d6dbf5;
+  border-color: #d6dbf5;
+}
+
+.base-label:has(input[type="radio"]:disabled) {
+  cursor: default;
+}
+
+.base-label.right:has(input[type="radio"]:checked),
+.base-label.right {
+  background-color: #94d7a2;
+  border-color: #94d7a2;
+}
+
+.base-label.wrong:has(input[type="radio"]:checked),
+.base-label.wrong {
+  background-color: #f8bcbc;
+  border-color: #f8bcbc;
+}
+
+.base-label.unselected {
+  opacity: 0.5;
+}
+
+.question {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 0.5rem 0;
+}
+
+button {
+  background-color: #4d5b9e;
+  color: #f5f7fb;
+  font-family: Inter;
+  font-size: 0.64rem;
+  font-style: normal;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+}
+
+.game-results {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.results-display {
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
